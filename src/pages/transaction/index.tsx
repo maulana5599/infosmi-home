@@ -22,7 +22,6 @@ function Transaction() {
   const [showLoading, setShowLoading] = useState<boolean>(false);
   const fetchHistory = async () => {
     const response = await api.get("/transaction-event");
-    setShowLoading(true);
     return response.data;
   };
 
@@ -38,6 +37,12 @@ function Transaction() {
       </Layout>
     );
   }
+
+  useEffect(() => {
+    if (isLoading) {
+      setShowLoading(true);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     if (isSuccess) {
