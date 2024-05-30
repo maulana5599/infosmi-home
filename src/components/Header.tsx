@@ -1,21 +1,39 @@
 import { useTranslation } from "react-i18next";
 import MenuItems from "./MenuItems";
+import Link from "next/link";
+import Image from "next/image";
+import { Button, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { useState } from "react";
+import { AirplaneTicket, History } from "@mui/icons-material";
 
 export default function Header() {
   const menus = MenuItems();
-  const { t,i18n, ready } = useTranslation();
+  const { t, i18n, ready } = useTranslation();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   if (!ready) return "loading translations...";
-  
+
   return (
-    <div className="header-area">
-      <div className="navbar-area navbar-two">
+    <div className="header-area" style={{marginBottom: "50px"}}>
+      <div className="navbar-area navbar-two" style={{ zIndex: 999, backgroundColor: "white",boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2)"}}>
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
               <nav className="navbar navbar-expand-lg">
-                <a className="navbar-brand" href="index.html">
-                  <img src="assets/images/logo.png" alt="Logo" />
-                </a>
+                <Link className="navbar-brand" href="/">
+                  <img
+                    width={100}
+                    src="http://localhost:8084/infosmi.png"
+                    alt="Logo"
+                  />
+                </Link>
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -36,7 +54,7 @@ export default function Header() {
                   <ul className="navbar-nav m-auto">
                     {menus.map((value, index) => {
                       return (
-                        <li className="nav-item">
+                        <li className="nav-item" key={index}>
                           <a className="page-scroll" href="#home">
                             {t(value.locale)}
                           </a>
@@ -46,56 +64,55 @@ export default function Header() {
                   </ul>
                 </div>
                 <div className="navbar-btn d-none d-sm-inline-block">
-                  <a className="main-btn" href="#">
-                    Get a Ticket
-                  </a>
+                  <Link href="/transaction">
+                  <Button variant="outlined" color="primary" startIcon={<History />}>
+                    <Typography fontFamily={"monospace"} style={{textTransform:"capitalize"}} component={"p"}>
+                      Transactions
+                    </Typography>
+                  </Button>
+                  </Link>
+                  <Button className="mx-2" variant="outlined" color="primary" startIcon={<AirplaneTicket />}>
+                    <Typography fontFamily={"monospace"} style={{textTransform:"capitalize"}} component={"p"}>
+                      Ticket
+                    </Typography>
+                  </Button>
+                  <IconButton
+                    aria-label="delete"
+                    id="dropdown-button"
+                    aria-controls={open ? "dropdown-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <Image
+                      width={50}
+                      height={50}
+                      src="/profile.webp"
+                      alt="image-profile"
+                    />
+                  </IconButton>
+
+                  <Menu
+                    id="dropdown-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "dropdown-button",
+                    }}
+                  >
+                    <MenuItem onClick={handleClose}>Option 1</MenuItem>
+                    <MenuItem onClick={handleClose}>Option 2</MenuItem>
+                    <MenuItem onClick={handleClose}>Option 3</MenuItem>
+                  </Menu>
                 </div>
               </nav>
             </div>
           </div>
         </div>
       </div>
-      <div
-        id="home"
-        className="header-content-area bg_cover d-flex align-items-center"
-        style={{ backgroundImage: "url(assets/images/header-bg.jpg)" }}
-      >
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-10">
-              <div className="header-content text-center">
-                <h2 className="header-title">
-                  You are Using Free Lite Version of Eventify
-                </h2>
-                <h3 className="sub-title">
-                  Please, purchase full version to get all sections, features
-                  and permission to remove credits
-                </h3>
-                <ul className="header-btn">
-                  <li>
-                    <a
-                      className="main-btn main-btn-2"
-                      href="https://rebrand.ly/eventify-ud"
-                      rel="nofollow"
-                    >
-                      Purchase Now
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className="main-btn"
-                      href="https://rebrand.ly/eventify-ud"
-                      rel="nofollow"
-                    >
-                      Learn More
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="home"></div>
     </div>
   );
 }
