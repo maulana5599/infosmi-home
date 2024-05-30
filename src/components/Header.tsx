@@ -21,8 +21,15 @@ export default function Header() {
   if (!ready) return "loading translations...";
 
   return (
-    <div className="header-area" style={{marginBottom: "50px"}}>
-      <div className="navbar-area navbar-two" style={{ zIndex: 999, backgroundColor: "white",boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2)"}}>
+    <div className="header-area" style={{ marginBottom: "50px" }}>
+      <div
+        className="navbar-area navbar-two"
+        style={{
+          zIndex: 999,
+          backgroundColor: "#152955",
+          boxShadow: "0 1px 1px 0 rgba(0, 0, 0, 0.2)",
+        }}
+      >
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
@@ -30,6 +37,7 @@ export default function Header() {
                 <Link className="navbar-brand" href="/">
                   <img
                     width={100}
+                    className="img-thumbnail"
                     src="http://localhost:8084/infosmi.png"
                     alt="Logo"
                   />
@@ -51,28 +59,41 @@ export default function Header() {
                   className="collapse navbar-collapse sub-menu-bar"
                   id="navbarTwo"
                 >
-                  <ul className="navbar-nav m-auto">
-                    {menus.map((value, index) => {
-                      return (
-                        <li className="nav-item" key={index}>
-                          <a className="page-scroll" href="#home">
-                            {t(value.locale)}
-                          </a>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <ul className="navbar-nav m-auto"></ul>
                 </div>
                 <div className="navbar-btn d-none d-sm-inline-block">
                   <Link href="/transaction">
-                  <Button variant="outlined" color="primary" startIcon={<History />}>
-                    <Typography fontFamily={"monospace"} style={{textTransform:"capitalize"}} component={"p"}>
-                      Transactions
-                    </Typography>
-                  </Button>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      startIcon={<History />}
+                      sx={{ color: "white" }}
+                    >
+                      <Typography
+                        fontFamily={"monospace"}
+                        color={"white"}
+                        style={{ textTransform: "capitalize" }}
+                        component={"p"}
+                        fontWeight={"bold"}
+                      >
+                        Transactions
+                      </Typography>
+                    </Button>
                   </Link>
-                  <Button className="mx-2" variant="outlined" color="primary" startIcon={<AirplaneTicket />}>
-                    <Typography fontFamily={"monospace"} style={{textTransform:"capitalize"}} component={"p"}>
+                  <Button
+                    className="mx-2"
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<AirplaneTicket />}
+                    sx={{ color: "white" }}
+                  >
+                    <Typography
+                      fontFamily={"monospace"}
+                      color={"white"}
+                      style={{ textTransform: "capitalize" }}
+                      component={"p"}
+                      fontWeight={"bold"}
+                    >
                       Ticket
                     </Typography>
                   </Button>

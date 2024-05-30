@@ -20,7 +20,7 @@ export default function Document() {
         <link rel="stylesheet" href="/uitemplate/assets/css/default.css" />
         <link rel="stylesheet" href="/uitemplate/assets/css/style.css" />
       </Head>
-      <body id="page-top">
+      <body id="page-top" style={{backgroundColor: "#f8f8f6"}}>
         <Main />
         <NextScript />
         <script src="/uitemplate/assets/js/vendor/modernizr-3.6.0.min.js"></script>
