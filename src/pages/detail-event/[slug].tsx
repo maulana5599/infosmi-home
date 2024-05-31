@@ -6,7 +6,7 @@ import {
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import TicketCard from "@/components/eventlist/TikcetCard";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -15,6 +15,8 @@ import formatRupiah from "@/components/utils/Rupiah";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addProduct } from "@/redux/reducers";
+import AuthCheck from "@/components/utils/auth";
+import api from "@/components/utils/axios";
 interface DetailEventProps {
   slug: string | string[];
 }
@@ -51,11 +53,12 @@ const DetailEvent: React.FC<DetailEventProps> = ({
   const [ticket, setTicket] = useState<EventTicketType[]>([]);
   const [checkout, setCheckout] = useState<any[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const auth = AuthCheck();
   const router = useRouter();
   const dispatch = useDispatch();
   const fetchDetailEvent = async (): Promise<AxiosResponse> => {
-    const response = await axios.get(
-      `http://localhost:8084/api/detail-event?slug=${slug}`
+    const response = await api.get(
+      `/detail-event?slug=${slug}`
     );
     return response;
   };
@@ -183,8 +186,12 @@ const DetailEvent: React.FC<DetailEventProps> = ({
         event_id: eventId
       }
 
-      dispatch(addProduct(value));
-      router.push(`/checkout/${eventData?.kegiatan_nama}`);
+      if(auth.is_auth) {
+        dispatch(addProduct(value));
+        router.push(`/checkout/${eventData?.kegiatan_nama}`);
+      } else {
+        router.push("/login");
+      }
     }
   };
 

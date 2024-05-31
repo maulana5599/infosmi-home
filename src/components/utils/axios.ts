@@ -9,11 +9,7 @@ api.interceptors.request.use(
     const token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
-    } else {
-      config.headers[
-        "Authorization"
-      ] = `Bearer 4|gx7pJfszbOdZGz2uLifHRpxi8aP2ydYo7nuOi0v3f0c8c300`;
-    }
+    } 
     return config;
   },
   (error) => {

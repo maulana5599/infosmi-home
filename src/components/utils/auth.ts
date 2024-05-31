@@ -8,8 +8,8 @@ const AuthCheck = () => {
     let isAuth: IAuthState = {
         is_auth: false
     }
-
-    if(true) {
+    const token = localStorage.getItem("token");
+    if(token) {
         isAuth = {
             is_auth: true
         }

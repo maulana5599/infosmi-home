@@ -3,20 +3,45 @@ import MenuItems from "./MenuItems";
 import Link from "next/link";
 import Image from "next/image";
 import { Button, IconButton, Menu, MenuItem, Typography } from "@mui/material";
-import { useState } from "react";
-import { AirplaneTicket, History } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import {
+  AirplaneTicket,
+  AppRegistration,
+  History,
+  Login,
+  Logout,
+} from "@mui/icons-material";
+import AuthCheck from "./utils/auth";
 
 export default function Header() {
   const menus = MenuItems();
   const { t, i18n, ready } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuth(false);
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 300)
+  };
+
+  useEffect(() => {
+    const auth = AuthCheck();
+    if (auth !== undefined) {
+      if (auth.is_auth) {
+        setIsAuth(auth.is_auth);
+      }
+    }
+  }, []);
 
   if (!ready) return "loading translations...";
 
@@ -62,71 +87,130 @@ export default function Header() {
                   <ul className="navbar-nav m-auto"></ul>
                 </div>
                 <div className="navbar-btn d-none d-sm-inline-block">
-                  <Link href="/transaction">
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      startIcon={<History />}
-                      sx={{ color: "white" }}
-                    >
-                      <Typography
-                        fontFamily={"monospace"}
-                        color={"white"}
-                        style={{ textTransform: "capitalize" }}
-                        component={"p"}
-                        fontWeight={"bold"}
+                  {isAuth ? (
+                    <>
+                      <Link href="/transaction">
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          startIcon={<History />}
+                          sx={{ color: "white" }}
+                        >
+                          <Typography
+                            fontFamily={"monospace"}
+                            color={"white"}
+                            style={{ textTransform: "capitalize" }}
+                            component={"p"}
+                            fontWeight={"bold"}
+                          >
+                            Transactions
+                          </Typography>
+                        </Button>
+                      </Link>
+                      <Button
+                        className="mx-2"
+                        variant="outlined"
+                        color="primary"
+                        startIcon={<AirplaneTicket />}
+                        sx={{ color: "white" }}
                       >
-                        Transactions
-                      </Typography>
-                    </Button>
-                  </Link>
-                  <Button
-                    className="mx-2"
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<AirplaneTicket />}
-                    sx={{ color: "white" }}
-                  >
-                    <Typography
-                      fontFamily={"monospace"}
-                      color={"white"}
-                      style={{ textTransform: "capitalize" }}
-                      component={"p"}
-                      fontWeight={"bold"}
-                    >
-                      Ticket
-                    </Typography>
-                  </Button>
-                  <IconButton
-                    aria-label="delete"
-                    id="dropdown-button"
-                    aria-controls={open ? "dropdown-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
-                  >
-                    <Image
-                      width={50}
-                      height={50}
-                      src="/profile.webp"
-                      alt="image-profile"
-                    />
-                  </IconButton>
+                        <Typography
+                          fontFamily={"monospace"}
+                          color={"white"}
+                          style={{ textTransform: "capitalize" }}
+                          component={"p"}
+                          fontWeight={"bold"}
+                        >
+                          Ticket
+                        </Typography>
+                      </Button>
+                      <IconButton
+                        aria-label="delete"
+                        id="dropdown-button"
+                        aria-controls={open ? "dropdown-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={handleClick}
+                      >
+                        <Image
+                          width={50}
+                          height={50}
+                          src="/profile.webp"
+                          alt="image-profile"
+                        />
+                      </IconButton>
+                      <Menu
+                        id="dropdown-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        onClick={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "dropdown-button",
+                        }}
+                      >
+                        <MenuItem onClick={handleClose}>
+                          <Button
+                            startIcon={<Logout />}
+                            variant="outlined"
+                            color="primary"
+                            onClick={handleLogout}
+                          >
+                            <Typography
+                              fontFamily={"monospace"}
+                              textTransform={"capitalize"}
+                              component={"p"}
+                              fontWeight={"bold"}
+                              color={"primary"}
+                            >
+                              Logout
+                            </Typography>
+                          </Button>
+                        </MenuItem>
+                      </Menu>
+                    </>
+                  ) : (
+                    <>
+                      <Link href={"/login"}>
+                        <Button
+                          startIcon={<Login />}
+                          variant="outlined"
+                          color="primary"
+                          sx={{ color: "white" }}
+                        >
+                          <Typography
+                            fontFamily={"monospace"}
+                            textTransform={"capitalize"}
+                            color={"white"}
+                            component={"p"}
+                            fontWeight={"bold"}
+                          >
+                            Login
+                          </Typography>
+                        </Button>
+                      </Link>
 
-                  <Menu
-                    id="dropdown-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    onClick={handleClose}
-                    MenuListProps={{
-                      "aria-labelledby": "dropdown-button",
-                    }}
-                  >
-                    <MenuItem onClick={handleClose}>Option 1</MenuItem>
-                    <MenuItem onClick={handleClose}>Option 2</MenuItem>
-                    <MenuItem onClick={handleClose}>Option 3</MenuItem>
-                  </Menu>
+                      <Link href={"/register"}>
+                        <Button
+                          className="mx-3"
+                          startIcon={<AppRegistration />}
+                          variant="outlined"
+                          color="primary"
+                          sx={{ color: "white" }}
+                        >
+                          <Typography
+                            fontFamily={"monospace"}
+                            textTransform={"capitalize"}
+                            color={"white"}
+                            component={"p"}
+                            fontWeight={"bold"}
+                          >
+                            Sign Up
+                          </Typography>
+                        </Button>
+                      </Link>
+                    </>
+                  )}
                 </div>
               </nav>
             </div>

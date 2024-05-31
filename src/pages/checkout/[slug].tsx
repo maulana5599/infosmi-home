@@ -4,6 +4,7 @@ import axios from "axios";
 import { headers } from "next/headers";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Checkout() {
   const checkoutState = useSelector((state: any) => state.cartState);
@@ -14,7 +15,6 @@ export default function Checkout() {
   const [gender, setGender] = useState<string>("");
 
   const checkoutPayments = (e: React.FormEvent) => {
-
     e.preventDefault();
     const formData = {
       checkout_ticket: checkoutState?.checkout_ticket,
@@ -30,10 +30,12 @@ export default function Checkout() {
     api
       .post("/checkout-event", formData)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data); 
+        toast.success(res.data.message);
       })
       .catch((err) => {
-        alert(err);
+        console.log(err);
+        toast.error("Terjadi kesalahan pada server !");
       });
   };
   return (
@@ -174,6 +176,7 @@ export default function Checkout() {
           </div>
         </div>
       </section>
+      <ToastContainer/>
     </Layout>
   );
 }

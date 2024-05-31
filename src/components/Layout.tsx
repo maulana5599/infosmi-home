@@ -1,6 +1,7 @@
 "use client"
 
 import { Helmet } from "react-helmet";
+import Footer from "./Footer";
 import Header from "./Header";
 
 interface LayoutProps {
@@ -25,6 +26,7 @@ export default function Layout({ children, title = "Dashboard" }: LayoutProps) {
       </Helmet>
       <Header/>
       {children}
+      <Footer/>
     </>
   );
 }

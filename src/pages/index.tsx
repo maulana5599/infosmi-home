@@ -1,14 +1,14 @@
 import EventList from "@/components/eventlist/ListEvent";
 import Layout from "@/components/Layout";
+import Slider from "react-slick";
 import { EventType } from "@/types/EventType";
-import { Skeleton, Typography } from "@mui/material";
+import { Box, Grid, Skeleton, Typography } from "@mui/material";
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
 } from "@tanstack/react-query";
 import { useState } from "react";
-import axios from 'axios';
 export default function Home() {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -26,6 +26,9 @@ export default function Home() {
       <section id="about" className="about-area pb-130 pt-80">
         <div className="container">
           <div className="row justify-content-center">
+            <div className="col-md-12 text-center mb-5">
+              <CarouselComponents />
+            </div>
             <div className="col-lg-8">
               <div className="section-title text-center pb-20">
                 <h2 className="title">Popular Event</h2>
@@ -58,7 +61,7 @@ const FetchEventList = () => {
     isError,
     error,
     isLoading,
-  }: { data: any; isError: any; isLoading: any, error: any } = useQuery({
+  }: { data: any; isError: any; isLoading: any; error: any } = useQuery({
     queryKey: ["event"],
     queryFn: fetchEvent,
   });
@@ -70,7 +73,7 @@ const FetchEventList = () => {
       </div>
     );
   }
-  
+
   return (
     <>
       {isLoading ? (
@@ -83,5 +86,41 @@ const FetchEventList = () => {
         </>
       )}
     </>
+  );
+};
+
+const CarouselComponents: React.FC = () => {
+  return (
+    <Box sx={{ width: "100%" }}>
+      <Slider autoplay={true} autoplaySpeed={3000} accessibility={false} arrows={false} centerMode={true} slidesToShow={2} centerPadding="60px">
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <img
+              style={{ width: "100%", height: "50%" }}
+              className="img-thumbnail"
+              src="https://api.yesplis.com/images/banner/8e78db2964bc29686b1c0ac1dfc4e985678d6220.png.webp"
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <img
+              style={{ width: "100%", height: "50%" }}
+              className="img-thumbnail"
+              src="https://api.yesplis.com/images/banner/1313f5deb522848001ffd55058092671d8cae4c8.png.webp"
+            />
+          </Grid>
+        </Grid>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
+            <img
+              style={{ width: "100%", height: "50%" }}
+              className="img-thumbnail"
+              src="https://api.yesplis.com/images/banner/50eb493c779b4b8e6b268eab1a6484b5a29fcb1f.png.webp"
+            />
+          </Grid>
+        </Grid>
+      </Slider>
+    </Box>
   );
 };
