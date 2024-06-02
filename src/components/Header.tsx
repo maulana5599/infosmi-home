@@ -2,7 +2,22 @@ import { useTranslation } from "react-i18next";
 import MenuItems from "./MenuItems";
 import Link from "next/link";
 import Image from "next/image";
-import { Box, Button, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Drawer,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   AirplaneTicket,
@@ -14,6 +29,7 @@ import {
   Mail,
 } from "@mui/icons-material";
 import AuthCheck from "./utils/auth";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const menus = MenuItems();
@@ -39,7 +55,7 @@ export default function Header() {
     setIsAuth(false);
     setTimeout(() => {
       window.location.href = "/";
-    }, 300)
+    }, 300);
   };
 
   useEffect(() => {
@@ -226,7 +242,7 @@ export default function Header() {
           </div>
         </div>
         <Drawer open={openDrawer} onClose={toggleDrawer(false)}>
-          {DrawerList}
+          <DrawerComponent />
         </Drawer>
       </div>
       <div id="home"></div>
@@ -234,32 +250,56 @@ export default function Header() {
   );
 }
 
-const DrawerList = (
-  <Box sx={{ width: 250 }} role="presentation" >
-    <List>
-      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton>
+const DrawerComponent: React.FC = () => {
+  const router = useRouter();
+
+  const changePage = (page: string) => {
+    router.push(`/${page}`);
+  };
+  return (
+    <Box sx={{ width: 250 }} role="presentation">
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              marginX: 1,
+              marginY: 1,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              width={50}
+              height={50}
+              src="/profile.webp"
+              alt="image-profile"
+              style={{ marginRight: 10 }}
+            />
+            <Typography
+              fontWeight={"bold"}
+              fontFamily={"monospace"}
+              component={"p"}
+            >
+              Maulana Muhammad Rizky
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+      <Divider />
+
+      <List>
+        <ListItem key={"menu"} disablePadding>
+          <ListItemButton
+            component="a"
+            onClick={() => changePage("transaction")}
+          >
             <ListItemIcon>
-              {index % 2 === 0 ? <Inbox /> : <Mail />}
+              <Mail />
             </ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={"Transactions"} />
           </ListItemButton>
         </ListItem>
-      ))}
-    </List>
-    <Divider />
-    <List>
-      {['All mail', 'Trash', 'Spam'].map((text, index) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton>
-            <ListItemIcon>
-              {index % 2 === 0 ? <Inbox /> : <Mail />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  </Box>
-);
+      </List>
+    </Box>
+  );
+};

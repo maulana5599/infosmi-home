@@ -63,7 +63,7 @@ function Transaction() {
                 <Skeleton variant="rectangular" width="100%" height="200px" />
               ) : (
                 <Card>
-                  <CardContent>
+                  <CardContent className="table-responsive">
                     <table className="table table-striped table-hover">
                       <thead>
                         <tr>
