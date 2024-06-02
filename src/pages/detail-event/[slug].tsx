@@ -196,120 +196,119 @@ const DetailEvent: React.FC<DetailEventProps> = ({
   };
 
   return (
-    <Layout>
-      <section id="about" className="about-area pb-130 pt-80">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              {showLoading ? (
-                <div style={{ height: "315px" }}>
-                  <Skeleton variant="rectangular" sx={{ height: "100%" }} />
-                </div>
-              ) : (
-                <div
-                  className="about-image mt-50 wow fadeInLeft"
-                  data-wow-duration="1s"
-                >
-                  <img
-                    className="img-thumbnail"
-                    src={`http://localhost:8084/storage/images/${eventData?.foto}`}
-                    alt="About"
-                  />
-                </div>
-              )}
+    <section id="about" className="about-area pb-130 pt-80">
+    <div className="container">
+      <div className="row align-items-center">
+        <div className="col-lg-6">
+          {showLoading ? (
+            <div style={{ height: "315px" }}>
+              <Skeleton variant="rectangular" sx={{ height: "100%" }} />
             </div>
-            <div className="col-lg-6">
+          ) : (
+            <div
+              className="about-image mt-50 wow fadeInLeft"
+              data-wow-duration="1s"
+            >
+              <img
+                className="img-thumbnail"
+                src={`http://localhost:8084/storage/images/${eventData?.foto}`}
+                alt="About"
+              />
+            </div>
+          )}
+        </div>
+        <div className="col-lg-6">
+          {showLoading ? (
+            <>
+              <Skeleton variant="rectangular" height={200} />
+              <Skeleton
+                variant="rectangular"
+                sx={{ marginTop: 2, padding: 0 }}
+                height={100}
+              />
+            </>
+          ) : (
+            <div
+              className="about-content mt-45 wow fadeInRight"
+              data-wow-duration="1s"
+            >
+              <div className="section-title">
+                <h2 className="title">{eventData?.kegiatan_nama}</h2>
+              </div>
+              <p className="date">
+                <span>
+                  {new Date(eventData?.tanggal_event).getDate()}
+                <sup>th</sup>
+                </span>
+                {new Date(eventData?.tanggal_event).toLocaleString('default', { month: 'long' })}’ {new Date(eventData?.tanggal_event).getFullYear()}
+              </p>
+              <p className="mt-4">
+                <i className="lni lni-map-marker" />
+                <span>{eventData?.lokasi}</span>
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6 mt-3 ">
+          <h3>Description</h3>
+          <hr />
+          <div>
+            <p className="text mt- text-justify">{eventData.deskripsi}</p>
+          </div>
+        </div>
+        <div className="col-md-6 mt-3">
+          <h3>Category Ticket</h3>
+          <hr />
+          <div className="card">
+            <div className="card-header">All Ticket</div>
+            <div className="card-body">
               {showLoading ? (
                 <>
-                  <Skeleton variant="rectangular" height={200} />
-                  <Skeleton
-                    variant="rectangular"
-                    sx={{ marginTop: 2, padding: 0 }}
-                    height={100}
-                  />
+                  <Skeleton variant="rectangular" height={100} />
                 </>
               ) : (
-                <div
-                  className="about-content mt-45 wow fadeInRight"
-                  data-wow-duration="1s"
-                >
-                  <div className="section-title">
-                    <h2 className="title">{eventData?.kegiatan_nama}</h2>
-                  </div>
-                  <p className="date">
-                    <span>
-                      25<sup>th</sup>
-                    </span>
-                    December’ 19
-                  </p>
-                  <p className="mt-4">
-                    <i className="lni lni-map-marker" />
-                    <span>Stadion Mandala Krida | Mandala Krida</span>
-                  </p>
-                </div>
+                <>
+                  {ticket.map((value) => (
+                    <TicketCard
+                      value={value}
+                      removeTicket={(e: any, tiket: any) =>
+                        removeTicket(e, tiket)
+                      }
+                      addTicket={(e: any, tiket: any) =>
+                        addTicket(e, tiket)
+                      }
+                    />
+                  ))}
+                </>
               )}
             </div>
           </div>
-          <div className="row">
-            <div className="col-md-6 mt-3 ">
-              <h3>Description</h3>
-              <hr />
-              <div>
-                <p className="text mt- text-justify">{eventData.deskripsi}</p>
-              </div>
+          <div className="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              <h5>Subtotal</h5>
+              <h5 className="total-checkout">{formatRupiah(totalPrice)}</h5>
             </div>
-            <div className="col-md-6 mt-3">
-              <h3>Category Ticket</h3>
-              <hr />
-              <div className="card">
-                <div className="card-header">All Ticket</div>
-                <div className="card-body">
-                  {showLoading ? (
-                    <>
-                      <Skeleton variant="rectangular" height={100} />
-                    </>
-                  ) : (
-                    <>
-                      {ticket.map((value) => (
-                        <TicketCard
-                          value={value}
-                          removeTicket={(e: any, tiket: any) =>
-                            removeTicket(e, tiket)
-                          }
-                          addTicket={(e: any, tiket: any) =>
-                            addTicket(e, tiket)
-                          }
-                        />
-                      ))}
-                    </>
-                  )}
-                </div>
-              </div>
-              <div className="d-flex justify-content-between align-items-center mt-3">
-                <div>
-                  <h5>Subtotal</h5>
-                  <h5 className="total-checkout">{formatRupiah(totalPrice)}</h5>
-                </div>
-                <div>
-                  <button
-                    type="button"
-                    id="checkout-page"
-                    className="btn btn-danger"
-                    onClick={handleCheckout}
-                  >
-                    Checkout
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-md-12">
-              <ToastContainer />
+            <div>
+              <button
+                type="button"
+                id="checkout-page"
+                className="btn btn-danger"
+                onClick={handleCheckout}
+              >
+                Checkout
+              </button>
             </div>
           </div>
         </div>
-      </section>
-    </Layout>
+      </div>
+      <div className="row">
+        <div className="col-md-12">
+          <ToastContainer />
+        </div>
+      </div>
+    </div>
+  </section>
   );
 };

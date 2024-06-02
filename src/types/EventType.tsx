@@ -1,6 +1,7 @@
 export interface EventType {
   id: number;
   kegiatan_nama: string;
+  tanggal_event: string;
   deskripsi: string;
   start_date: string;
   end_date: string;

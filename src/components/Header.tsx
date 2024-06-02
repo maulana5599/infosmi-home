@@ -2,14 +2,16 @@ import { useTranslation } from "react-i18next";
 import MenuItems from "./MenuItems";
 import Link from "next/link";
 import Image from "next/image";
-import { Button, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Box, Button, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   AirplaneTicket,
   AppRegistration,
   History,
+  Inbox,
   Login,
   Logout,
+  Mail,
 } from "@mui/icons-material";
 import AuthCheck from "./utils/auth";
 
@@ -17,8 +19,14 @@ export default function Header() {
   const menus = MenuItems();
   const { t, i18n, ready } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
   const [isAuth, setIsAuth] = useState<boolean>(false);
+  const [openDrawer, setOpen] = useState<boolean>(false);
+  const open = Boolean(anchorEl);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setOpen(newOpen);
+  };
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -75,6 +83,7 @@ export default function Header() {
                   aria-controls="navbarTwo"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
+                  onClick={toggleDrawer(true)}
                 >
                   <span className="toggler-icon" />
                   <span className="toggler-icon" />
@@ -216,8 +225,41 @@ export default function Header() {
             </div>
           </div>
         </div>
+        <Drawer open={openDrawer} onClose={toggleDrawer(false)}>
+          {DrawerList}
+        </Drawer>
       </div>
       <div id="home"></div>
     </div>
   );
 }
+
+const DrawerList = (
+  <Box sx={{ width: 250 }} role="presentation" >
+    <List>
+      {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+        <ListItem key={text} disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              {index % 2 === 0 ? <Inbox /> : <Mail />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+    <Divider />
+    <List>
+      {['All mail', 'Trash', 'Spam'].map((text, index) => (
+        <ListItem key={text} disablePadding>
+          <ListItemButton>
+            <ListItemIcon>
+              {index % 2 === 0 ? <Inbox /> : <Mail />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
+  </Box>
+);
