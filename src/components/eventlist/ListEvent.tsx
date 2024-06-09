@@ -31,7 +31,7 @@ const EventList: React.FC<ListProps> = ({ value }: ListProps) => {
         >
           <CardMedia
             component="img"
-            image={`http://localhost:8084/storage/images/${value?.foto}`}
+            image={`${process.env.NEXT_PUBLIC_BASE_URL}storage/images/${value?.foto}`}
             style={{ width: "100%", height: "200px" }}
             alt="Paella dish"
             loading="lazy"

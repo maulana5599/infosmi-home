@@ -211,7 +211,7 @@ const DetailEvent: React.FC<DetailEventProps> = ({
             >
               <img
                 className="img-thumbnail"
-                src={`http://localhost:8084/storage/images/${eventData?.foto}`}
+                src={`${process.env.NEXT_PUBLIC_BASE_URL}storage/images/${eventData?.foto}`}
                 alt="About"
               />
             </div>
