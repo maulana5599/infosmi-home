@@ -23,7 +23,6 @@ import {
   AirplaneTicket,
   AppRegistration,
   History,
-  Inbox,
   Login,
   Logout,
   Mail,
@@ -70,7 +69,7 @@ export default function Header() {
   if (!ready) return "loading translations...";
 
   return (
-    <div className="header-area" style={{ marginBottom: "50px" }}>
+    <div className="header-area" style={{ marginBottom: "50px" }}>  
       <div
         className="navbar-area navbar-two"
         style={{
@@ -87,7 +86,7 @@ export default function Header() {
                   <img
                     width={100}
                     className="img-thumbnail"
-                    src="http://localhost:8084/infosmi.png"
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}infosmi.png`}
                     alt="Logo"
                   />
                 </Link>
