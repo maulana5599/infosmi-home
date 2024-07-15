@@ -36,6 +36,7 @@ export default function Header() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [openDrawer, setOpen] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null as any);
   const open = Boolean(anchorEl);
 
   const toggleDrawer = (newOpen: boolean) => () => {
@@ -63,6 +64,11 @@ export default function Header() {
       if (auth.is_auth) {
         setIsAuth(auth.is_auth);
       }
+    }
+
+    const session = sessionStorage.getItem("user");
+    if (session) {
+      setUser(JSON.parse(session));
     }
   }, []);
 
@@ -156,6 +162,7 @@ export default function Header() {
                         aria-expanded={open ? "true" : undefined}
                         onClick={handleClick}
                       >
+                        <Typography className="text-white mx-2" style={{ textTransform: "capitalize", fontWeight: "bold" }}>{user?.name}</Typography>
                         <Image
                           width={50}
                           height={50}

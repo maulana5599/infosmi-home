@@ -20,6 +20,8 @@ import {
 import { ArrowBack, ArrowForward, ArrowForwardIos } from "@mui/icons-material";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useEffect, useState } from "react";
+import api from "@/components/utils/axios";
 
 export default function Home() {
   const queryClient = new QueryClient({
@@ -112,6 +114,7 @@ export default function Home() {
 
 const FetchEventList = () => {
   const isMobile = useMediaQuery("(max-width:600px)");
+  const [slider, setSlider] = useState<any[]>([]);
   const fetchEvent = async (): Promise<any> => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/fetch-events`);
     return response.json();
@@ -164,7 +167,23 @@ const FetchEventList = () => {
 };
 
 const CarouselComponents: React.FC = () => {
+  const [slider, setSlider] = useState<any[]>([]);
   const isMobile = useMediaQuery("(max-width:600px)");
+  const fetchSlider = async (): Promise<any> => {
+    const response = api.get("/slider-event");
+    response
+      .then((res) => {
+        console.log(res);
+        setSlider(res.data.slider);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchSlider();
+  }, []);
   return (
     <Box sx={{ width: "100%" }}>
       <Slider
@@ -173,48 +192,39 @@ const CarouselComponents: React.FC = () => {
         accessibility={false}
         arrows={false}
         centerMode={isMobile ? false : true}
-        slidesToShow={isMobile ? 1 : 3}
+        slidesToShow={isMobile ? 1 : 1}
         className="mx-2"
       >
-        <Grid xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <div className="p-2">
-            <img
-              style={{
-                width: "100%",
-                height: "50%",
-                maxHeight: "450px",
-                borderRadius: 20,
-              }}
-              src="https://api.yesplis.com/images/banner/8e78db2964bc29686b1c0ac1dfc4e985678d6220.png.webp"
-            />
+        {slider ? (
+          slider?.map((value, index) => (
+            <Grid
+              xs={12}
+              sx={{ display: "flex", justifyContent: "center" }}
+              key={"slider" - index}
+            >
+              <div className="p-2">
+                <Image
+                  width={0}
+                  height={0}
+                  sizes="100%"
+                  loading="lazy"
+                  style={{
+                    width: "100%",
+                    height: "50%",
+                    maxHeight: "450px",
+                    borderRadius: 20,
+                  }}
+                  alt={value.image}
+                  src={value.image}
+                />
+              </div>
+            </Grid>
+          ))
+        ) : (
+          <div>
+            <h1>Tidak di temukan !</h1>
           </div>
-        </Grid>
-        <Grid xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <div className="p-2">
-            <img
-              style={{
-                width: "100%",
-                height: "50%",
-                maxHeight: "450px",
-                borderRadius: 20,
-              }}
-              src="https://api.yesplis.com/images/banner/1313f5deb522848001ffd55058092671d8cae4c8.png.webp"
-            />
-          </div>
-        </Grid>
-        <Grid xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-          <div className="p-2">
-            <img
-              style={{
-                width: "100%",
-                height: "50%",
-                maxHeight: "450px",
-                borderRadius: 20,
-              }}
-              src="https://api.yesplis.com/images/banner/50eb493c779b4b8e6b268eab1a6484b5a29fcb1f.png.webp"
-            />
-          </div>
-        </Grid>
+        )}
       </Slider>
     </Box>
   );

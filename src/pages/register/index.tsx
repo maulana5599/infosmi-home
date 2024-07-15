@@ -1,5 +1,5 @@
 // src/Register.tsx
-import React from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +12,8 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { Card, CardContent } from "@mui/material";
+import api from "@/components/utils/axios";
+import { toast, ToastContainer } from "react-toastify";
 
 function Copyright(props: any) {
   return (
@@ -34,15 +36,38 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 const Register: React.FC = () => {
+  const [notmatch, setNotmatch] = useState(false);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+
+
+    if (data.get("password") !== data.get("password_confirmation")) {
+      setNotmatch(true);
+      return false;
+    }
+
+    let payload = {
+      name: data.get("name"),
       email: data.get("email"),
       password: data.get("password"),
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-    });
+      password_confirmation: data.get("password_confirmation"),
+    };
+
+    api
+      .post("/register", payload)
+      .then((response) => {
+        console.log(response.data);
+          toast.success(response.data?.message);
+          setTimeout(() => {
+            window.location.href = "/login";
+          }, 1000);
+      })
+      .catch((error) => {
+        if (error.response.data) {
+          toast.error(error.response.data?.message);
+        }
+      });
   };
 
   return (
@@ -78,25 +103,15 @@ const Register: React.FC = () => {
                   sx={{ mt: 1 }}
                 >
                   <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12}>
                       <TextField
                         autoComplete="given-name"
-                        name="firstName"
+                        name="name"
                         required
                         fullWidth
                         id="firstName"
-                        label="First Name"
+                        label="Full Name"
                         autoFocus
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        fullWidth
-                        id="lastName"
-                        label="Last Name"
-                        name="lastName"
-                        autoComplete="family-name"
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -120,6 +135,16 @@ const Register: React.FC = () => {
                         autoComplete="new-password"
                       />
                     </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="password_confirmation"
+                        label="Password Confirmation"
+                        type="password"
+                      />
+                      {notmatch ? <Typography className="text-danger" sx={{ mt: 0.2, fontSize: "12px" }}>Password doesn't match !</Typography> : null}
+                    </Grid>
                   </Grid>
                   <Button
                     type="submit"
@@ -131,7 +156,7 @@ const Register: React.FC = () => {
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <Link href="#" variant="body2">
+                      <Link href="/login" variant="body2">
                         Already have an account? Sign in
                       </Link>
                     </Grid>
@@ -142,6 +167,7 @@ const Register: React.FC = () => {
             </CardContent>
           </Card>
         </Container>
+        <ToastContainer />
       </Grid>
     </ThemeProvider>
   );

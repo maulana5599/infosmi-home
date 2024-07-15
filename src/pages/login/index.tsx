@@ -52,6 +52,7 @@ export default function Login() {
         console.log(response.data);
         if (response.data.token) {
           localStorage.setItem("token", response.data.token);
+          sessionStorage.setItem("user", JSON.stringify(response.data.user));
           toast.success(response.data.message);
           setTimeout(() => {
             window.location.href = "/";
