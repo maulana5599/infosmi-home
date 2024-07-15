@@ -200,7 +200,7 @@ const CarouselComponents: React.FC = () => {
             <Grid
               xs={12}
               sx={{ display: "flex", justifyContent: "center" }}
-              key={"slider" - index}
+              key={"slider" + index}
             >
               <div className="p-2">
                 <Image
