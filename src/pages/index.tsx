@@ -203,11 +203,7 @@ const CarouselComponents: React.FC = () => {
               key={"slider" + index}
             >
               <div className="p-2">
-                <Image
-                  width={0}
-                  height={0}
-                  sizes="100%"
-                  loading="lazy"
+                <img
                   style={{
                     width: "100%",
                     height: "50%",
