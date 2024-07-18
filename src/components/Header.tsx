@@ -75,7 +75,7 @@ export default function Header() {
   if (!ready) return "loading translations...";
 
   return (
-    <div className="header-area" style={{ marginBottom: "50px" }}>  
+    <div className="header-area" style={{ marginBottom: "50px" }}>
       <div
         className="navbar-area navbar-two"
         style={{
@@ -137,23 +137,25 @@ export default function Header() {
                           </Typography>
                         </Button>
                       </Link>
-                      <Button
-                        className="mx-2"
-                        variant="outlined"
-                        color="primary"
-                        startIcon={<AirplaneTicket />}
-                        sx={{ color: "white" }}
-                      >
-                        <Typography
-                          fontFamily={"monospace"}
-                          color={"white"}
-                          style={{ textTransform: "capitalize" }}
-                          component={"p"}
-                          fontWeight={"bold"}
+                      <Link href="/ticket">
+                        <Button
+                          className="mx-2"
+                          variant="outlined"
+                          color="primary"
+                          startIcon={<AirplaneTicket />}
+                          sx={{ color: "white" }}
                         >
-                          Ticket
-                        </Typography>
-                      </Button>
+                          <Typography
+                            fontFamily={"monospace"}
+                            color={"white"}
+                            style={{ textTransform: "capitalize" }}
+                            component={"p"}
+                            fontWeight={"bold"}
+                          >
+                            Ticket
+                          </Typography>
+                        </Button>
+                      </Link>
                       <IconButton
                         aria-label="delete"
                         id="dropdown-button"
@@ -162,7 +164,15 @@ export default function Header() {
                         aria-expanded={open ? "true" : undefined}
                         onClick={handleClick}
                       >
-                        <Typography className="text-white mx-2" style={{ textTransform: "capitalize", fontWeight: "bold" }}>{user?.name}</Typography>
+                        <Typography
+                          className="text-white mx-2"
+                          style={{
+                            textTransform: "capitalize",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {user?.name}
+                        </Typography>
                         <Image
                           width={50}
                           height={50}

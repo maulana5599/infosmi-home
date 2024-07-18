@@ -2,7 +2,8 @@ import Layout from "@/components/Layout";
 import api from "@/components/utils/axios";
 import axios from "axios";
 import { headers } from "next/headers";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -13,6 +14,7 @@ export default function Checkout() {
   const [dateBirth, setDateBirth] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [gender, setGender] = useState<string>("");
+  const router = useRouter();
 
   const checkoutPayments = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,53 +32,23 @@ export default function Checkout() {
     api
       .post("/checkout-event", formData)
       .then((res) => {
-        console.log(res.data); 
+        console.log(res.data);
         toast.success(res.data.message);
+        if (res.data?.data !== undefined) {
+          window.open(res.data.data.invoice_url, "_blank");
+        }
       })
       .catch((err) => {
         console.log(err);
         toast.error("Terjadi kesalahan pada server !");
       });
   };
+
   return (
     <Layout>
       <section id="about" className="about-area pb-130 pt-80">
         <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
-              <div
-                className="about-image mt-50 wow fadeInLeft"
-                data-wow-duration="1s"
-              >
-                <img
-                  className="img-thumbnail"
-                  src="https://api.yesplis.com/images/banner/a4382ac21129200a85351dac1d538f1c1064b4cd.png.webp"
-                  alt="About"
-                />
-              </div>
-            </div>
-            <div className="col-lg-6">
-              <div
-                className="about-content mt-45 wow fadeInRight"
-                data-wow-duration="1s"
-              >
-                <div className="section-title">
-                  <h2 className="title">Shiela On 7: Kutunggu Dibandung</h2>
-                </div>{" "}
-                {/* section title */}
-                <p className="date">
-                  <span>
-                    25<sup>th</sup>
-                  </span>
-                  December’ 19
-                </p>
-                <p className="mt-4">
-                  <i className="lni lni-map-marker" />
-                  <span>Stadion Mandala Krida | Mandala Krida</span>
-                </p>
-              </div>
-            </div>
-          </div>
+          <DetailEvent slug={router.query?.slug} />
           <div className="row">
             <div className="col-12 ol-md-6 mt-3">
               <div className="card">
@@ -176,7 +148,71 @@ export default function Checkout() {
           </div>
         </div>
       </section>
-      <ToastContainer/>
+      <ToastContainer />
     </Layout>
   );
 }
+
+const DetailEvent = ({ slug }: any) => {
+  console.log(slug);
+  const [eventData, setEventData] = useState<any>(null as any);
+
+  const fetchEvent = async (): Promise<any> => {
+    const response = await api
+      .get(`/detail-event?slug=${slug}`)
+      .then((res) => {
+        console.log(res.data.kegiatan);
+        setEventData(res.data.kegiatan);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    if (slug !== undefined) {
+      fetchEvent();
+    }
+  }, [slug]);
+
+  return (
+    <div className="row align-items-center">
+      <div className="col-lg-6">
+        <div
+          className="about-image mt-50 wow fadeInLeft"
+          data-wow-duration="1s"
+        >
+          <img
+            className="img-thumbnail"
+            src={eventData?.foto}
+            alt={eventData?.foto}
+          />
+        </div>
+      </div>
+      <div className="col-lg-6">
+        <div
+          className="about-content mt-45 wow fadeInRight"
+          data-wow-duration="1s"
+        >
+          <div className="section-title">
+            <h2 className="title">{eventData?.kegiatan_nama}</h2>
+          </div>
+          <p className="date">
+            <span>
+              {new Date(eventData?.tanggal_event).getDate()}
+              <sup>th</sup>
+            </span>
+            {new Date(eventData?.tanggal_event).toLocaleString("default", {
+              month: "long",
+            })}
+            {new Date(eventData?.tanggal_event).getFullYear()}
+          </p>
+          <p className="mt-4">
+            <i className="lni lni-map-marker" />
+            <span>{eventData?.lokasi}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

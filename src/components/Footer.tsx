@@ -1,6 +1,6 @@
-import React from 'react';
-import { Box, Typography, IconButton, Container } from '@mui/material';
-import { Facebook, Twitter, Instagram, LinkedIn } from '@mui/icons-material';
+import React from "react";
+import { Box, Typography, IconButton, Container } from "@mui/material";
+import { Facebook, Twitter, Instagram, LinkedIn, WhatsApp } from "@mui/icons-material";
 
 const Footer = () => {
   return (
@@ -9,27 +9,54 @@ const Footer = () => {
       sx={{
         py: 3,
         px: 2,
-        mt: 'auto',
+        mt: "auto",
         backgroundColor: (theme) =>
-          theme.palette.mode === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+          theme.palette.mode === "light"
+            ? theme.palette.grey[200]
+            : theme.palette.grey[800],
       }}
     >
       <Container maxWidth="sm">
         <Typography variant="body1" align="center">
           &copy; 2024 Infosmi. All rights reserved.
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
-          <IconButton href="https://www.facebook.com" target="_blank" aria-label="Facebook">
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
+          <IconButton
+            href="https://www.facebook.com"
+            target="_blank"
+            aria-label="Facebook"
+          >
             <Facebook />
           </IconButton>
-          <IconButton href="https://www.twitter.com" target="_blank" aria-label="Twitter">
+          <IconButton
+            href="https://www.twitter.com"
+            target="_blank"
+            aria-label="Twitter"
+          >
             <Twitter />
           </IconButton>
-          <IconButton href="https://www.instagram.com" target="_blank" aria-label="Instagram">
+          <IconButton
+            href="https://www.instagram.com"
+            target="_blank"
+            aria-label="Instagram"
+          >
             <Instagram />
           </IconButton>
-          <IconButton href="https://www.linkedin.com" target="_blank" aria-label="LinkedIn">
+          <IconButton
+            href="https://www.linkedin.com"
+            target="_blank"
+            aria-label="LinkedIn"
+          >
             <LinkedIn />
+          </IconButton>
+        </Box>
+      </Container>
+      <Container>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
+          <IconButton
+            aria-label="LinkedIn"
+          >
+            <WhatsApp /> <Typography className="ml-2">+62 812 3456 7890</Typography>
           </IconButton>
         </Box>
       </Container>

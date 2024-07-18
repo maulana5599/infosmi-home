@@ -188,7 +188,7 @@ const DetailEvent: React.FC<DetailEventProps> = ({
 
       if(auth.is_auth) {
         dispatch(addProduct(value));
-        router.push(`/checkout/${eventData?.kegiatan_nama}`);
+        router.push(`/checkout/${eventData?.slug}`);
       } else {
         router.push("/login");
       }
