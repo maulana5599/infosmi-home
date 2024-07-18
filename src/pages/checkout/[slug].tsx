@@ -184,7 +184,7 @@ const DetailEvent = ({ slug }: any) => {
         >
           <img
             className="img-thumbnail"
-            src={eventData?.foto}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}storage/images/${eventData?.foto}`}
             alt={eventData?.foto}
           />
         </div>

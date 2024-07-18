@@ -110,9 +110,7 @@ const FetchEventList = () => {
               >
                 <CardMedia
                   style={{ height: "100", paddingTop: "30vh"}}
-                  image={
-                    event?.foto
-                  }
+                  image={`${process.env.NEXT_PUBLIC_BASE_URL}storage/images/${event?.foto}`}
                 />
                 <CardContent>
                   <Typography
