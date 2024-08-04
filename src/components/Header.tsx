@@ -26,6 +26,7 @@ import {
   Login,
   Logout,
   Mail,
+  SupervisedUserCircleOutlined,
 } from "@mui/icons-material";
 import AuthCheck from "./utils/auth";
 import { useRouter } from "next/router";
@@ -192,10 +193,30 @@ export default function Header() {
                       >
                         <MenuItem onClick={handleClose}>
                           <Button
+                            startIcon={<SupervisedUserCircleOutlined />}
+                            variant="outlined"
+                            color="primary"
+                            fullWidth
+                            onClick={handleLogout}
+                          >
+                            <Typography
+                              fontFamily={"monospace"}
+                              textTransform={"capitalize"}
+                              component={"p"}
+                              fontWeight={"bold"}
+                              color={"primary"}
+                            >
+                              Profile
+                            </Typography>
+                          </Button>
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                          <Button
                             startIcon={<Logout />}
                             variant="outlined"
                             color="primary"
                             onClick={handleLogout}
+                            fullWidth
                           >
                             <Typography
                               fontFamily={"monospace"}

@@ -41,7 +41,6 @@ const Register: React.FC = () => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-
     if (data.get("password") !== data.get("password_confirmation")) {
       setNotmatch(true);
       return false;
@@ -52,6 +51,7 @@ const Register: React.FC = () => {
       email: data.get("email"),
       password: data.get("password"),
       password_confirmation: data.get("password_confirmation"),
+      address: data.get("address"),
     };
 
     api
@@ -144,6 +144,15 @@ const Register: React.FC = () => {
                         type="password"
                       />
                       {notmatch ? <Typography className="text-danger" sx={{ mt: 0.2, fontSize: "12px" }}>Password doesn't match !</Typography> : null}
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="address"
+                        label="Address"
+                        type="text"
+                      />
                     </Grid>
                   </Grid>
                   <Button
